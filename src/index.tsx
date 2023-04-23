@@ -3,13 +3,43 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from "react-router-dom";
+import {PokemonsPage} from "./PokemonsPage";
+import {AboutPage} from "./AboutPage";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+export const RoutingTable = {
+    root: '/pokedex',
+    pokedex: '/pokedex',
+    about: '/about'
+} as const;
+
+const router = createBrowserRouter(
+    createRoutesFromElements(
+        <Route
+            path={"/"}
+            element={
+                <App/>
+            }
+        >
+            <Route index element={<PokemonsPage/>} />
+
+            <Route path={RoutingTable.pokedex}>
+                <Route index element={<PokemonsPage/>} />
+            </Route>
+            <Route path={RoutingTable.about}>
+                <Route index element={<AboutPage />} />
+            </Route>
+        </Route>
+    )
+);
+
 root.render(
   <React.StrictMode>
-    <App />
+      <RouterProvider router={router} />
   </React.StrictMode>
 );
 
